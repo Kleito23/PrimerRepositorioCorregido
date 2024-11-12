@@ -50,7 +50,7 @@ import java.util.*;
 
 import static javax.management.remote.JMXConnectorFactory.connect;
 
-public class Gimnasio implements IEstadistica, IMetodosCrud<Cliente> {
+public class Gimnasio implements IContable, IRecaudable, IAgregable<Cliente>, IArchivable<Cliente>, IBuscable<Cliente>, IListable {
     //atributos
     private String nombre;
     private String direccion;
