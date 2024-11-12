@@ -84,6 +84,31 @@ public class Gimnasio implements IContable, IRecaudable, IAgregable<Cliente>, IA
         actividades = new ArrayList<>();
     }
 
+        public static int cantDiasRestantesCuota(Cliente c)
+    {
+        LocalDate fechaActual= LocalDate.now();
+//        System.out.println(fechaActual);
+//        System.out.println(fechaVencimientoCuota);
+        int data= Math.toIntExact(ChronoUnit.DAYS.between(fechaActual, c.getfechaVencimientoCuota()));
+        // System.out.println(Integer.parseInt(String.valueOf(data)));
+        //System.out.println(data);
+        
+        return data; //obtengo la cantidad de dias que le quedan a la cuota del cliente
+    }
+
+    public static boolean estaLaCuotaVencida(Cliente c)
+    {
+        boolean flag=false;
+
+        if (cantDiasRestantesCuota(Cliente c) < 0)
+        {
+            flag=true;
+        }
+
+        return flag;
+    }
+
+
     //getters y setters
 
     public static void setMailFit(String mailFit) {

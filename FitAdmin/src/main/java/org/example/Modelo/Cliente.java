@@ -71,7 +71,7 @@ public class Cliente extends Persona implements Serializable {
     public boolean isCuotaPagada() {
         boolean flag=false;
 
-        if (cantDiasRestantesCuota() >= 0) // si es 0 la tiene que pagar maniana
+        if (Gimnasio.cantDiasRestantesCuota(this) >= 0) // si es 0 la tiene que pagar maniana
         {
             flag=true;
         }
@@ -128,7 +128,7 @@ public class Cliente extends Persona implements Serializable {
             {
                 //tambien tengo que obtener el changui que queda si el cliente me paga antes del vencimiento
 
-                int difDeDias= cantDiasRestantesCuota();
+                int difDeDias= Gimnasio.cantDiasRestantesCuota(this);
                 int unaCuota=30;
                 System.out.println("Diferencia de dias: "+ difDeDias);
                 if (difDeDias >= 0) //si mi diferencia de dias es positiva, significa que me estas pagando antes
@@ -157,29 +157,6 @@ public class Cliente extends Persona implements Serializable {
         return mensaje;
     }
 
-    public int cantDiasRestantesCuota()
-    {
-        LocalDate fechaActual= LocalDate.now();
-//        System.out.println(fechaActual);
-//        System.out.println(fechaVencimientoCuota);
-        int data= Math.toIntExact(ChronoUnit.DAYS.between(fechaActual, fechaVencimientoCuota));
-        // System.out.println(Integer.parseInt(String.valueOf(data)));
-        //System.out.println(data);
-        
-        return data; //obtengo la cantidad de dias que le quedan a la cuota del cliente
-    }
-
-    public boolean estaLaCuotaVencida()
-    {
-        boolean flag=false;
-
-        if (cantDiasRestantesCuota() < 0)
-        {
-            flag=true;
-        }
-
-        return flag;
-    }
 
     //Esta funcion me va a servir para ordenar por dias y luego imprimir el PDF correctamente
     public String formatearDatosCliente(Cliente cliente)
