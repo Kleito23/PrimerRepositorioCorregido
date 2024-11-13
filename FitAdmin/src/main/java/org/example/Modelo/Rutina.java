@@ -22,24 +22,28 @@ public class Rutina implements Serializable
     private LinkedHashSet<Ejercicio> rutina;//nos importa el orden de realizacion de ejercicios
     private EObjetivo objetivo; //Perder peso|Ganar fuerza|Ganar musculo
     private EDiasSemana diaAsignado;
+    private LinkedHashMap<String, Rutina> rutinaSemanal;
     //constructores
 
     public Rutina(EObjetivo objetivo,EDiasSemana diaAsignado) {
         this.objetivo = objetivo;
         rutina = new LinkedHashSet<>();
         this.diaAsignado= diaAsignado;
+        setRutinaSemanal();
     }
 
     public Rutina(EDiasSemana diaAsignado) {
         objetivo = null;
         this.diaAsignado = diaAsignado;
         rutina = new LinkedHashSet<>();
+        setRutinaSemanal();
     }
 
     public Rutina() {
         objetivo = null;
         rutina = new LinkedHashSet<>();
         diaAsignado= null;
+        setRutinaSemanal();
     }
 
     //getters y setters
@@ -64,6 +68,10 @@ public class Rutina implements Serializable
     }
 
     //metodos
+    public Rutina getUnaRutinaEspecifica(Enum diaRequerido)
+    {
+        return rutinaSemanal.get(diaRequerido.toString());
+    }
 
     public boolean agregarUnEjercicioARutina(Ejercicio nuevoEjercicio)
     {
@@ -74,6 +82,18 @@ public class Rutina implements Serializable
     public boolean sacarUnEjercicioDeRutinaXObjeto(Ejercicio ejercicioAEliminar)
     {
         return rutina.remove(ejercicioAEliminar);
+    }
+    public void setRutinaSemanal() {
+        //metodo para inicializar todos los dias con una rutina vacia, y q no haya nullpointers
+        rutinaSemanal = new LinkedHashMap<>();
+        rutinaSemanal.put(EDiasSemana.LUNES.toString(),new Rutina(EDiasSemana.LUNES));
+        rutinaSemanal.put(EDiasSemana.MARTES.toString(),new Rutina(EDiasSemana.MARTES));
+        rutinaSemanal.put(EDiasSemana.MIERCOLES.toString(),new Rutina(EDiasSemana.MIERCOLES));
+        rutinaSemanal.put(EDiasSemana.JUEVES.toString(),new Rutina(EDiasSemana.JUEVES));
+        rutinaSemanal.put(EDiasSemana.VIERNES.toString(),new Rutina(EDiasSemana.VIERNES));
+        rutinaSemanal.put(EDiasSemana.SABADO.toString(),new Rutina(EDiasSemana.SABADO));
+        rutinaSemanal.put(EDiasSemana.DOMINGO.toString(),new Rutina(EDiasSemana.DOMINGO));
+
     }
 
 //    public boolean agregarUnEjercicioARutinaXId(int idEjercicioAAgregar, int repeticiones, int series){

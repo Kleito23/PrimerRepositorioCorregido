@@ -58,6 +58,8 @@ public class Gimnasio implements IContable, IRecaudable, IAgregable<Cliente>, IA
     private String usuario;
     private String contrasenia;
     private ArrayList<Actividad> actividades;
+    private final int cuotaOptima = 20;
+    private final int cuotaVencimiento = 10;
 
 
     private static Session session;
@@ -283,7 +285,7 @@ public class Gimnasio implements IContable, IRecaudable, IAgregable<Cliente>, IA
             if(accesoDelCliente)//si el acceso es true quiere decir que tiene la cuota vigente
             {
                 diasCuota = cliente.cantDiasRestantesCuota();
-                if(diasCuota>=20)//si esta la cuota optima
+                if(diasCuota>=cuotaOptima)//si esta la cuota optima
                 {
                 colorCuotaMensaje = "Te quedan "+diasCuota+" dias vigentes";
                 colorDeLaCuota.add(colorCuotaMensaje);
@@ -292,7 +294,7 @@ public class Gimnasio implements IContable, IRecaudable, IAgregable<Cliente>, IA
                 colorDeLaCuota.setFontColor(color);
 
                 }
-                else if(diasCuota>=10 && diasCuota < 20)//si la cuota se acerca al vencimiento
+                else if(diasCuota>=cuotaVencimiento && diasCuota < cuotaOptima)//si la cuota se acerca al vencimiento
                 {
                     colorCuotaMensaje = "Te quedan "+diasCuota+" dias vigentes";
                     colorDeLaCuota.add(colorCuotaMensaje);
@@ -300,7 +302,7 @@ public class Gimnasio implements IContable, IRecaudable, IAgregable<Cliente>, IA
 
                     colorDeLaCuota.setFontColor(color);
                 }
-                else//si ya es menor a 10 dias quiere decir que esta semana ya debo pagar
+                else//si ya es menor a la cuota de vencimiento quiere decir que esta semana ya debo pagar
                 {
                     colorCuotaMensaje = "Te quedan "+diasCuota+" dias vigentes";
                     colorDeLaCuota.add(colorCuotaMensaje);

@@ -2,6 +2,7 @@ package org.example.GUI;
 
 import org.example.GUI.PopUps.JfrAvisoPopUp;
 import org.example.GUI.PopUps.JfrErrorPopUp;
+import org.example.Interfaces.AccionBusqueda;
 import org.example.Modelo.Cliente;
 
 import javax.swing.*;
@@ -12,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.example.GUI.GUIEnvoltorio.gimnasio;
@@ -32,6 +35,8 @@ public class JfrModificarCliente extends JFrame {
     private JPanel jPanel1;
     private JScrollPane jScrollPane1;
     private Cliente cliente;
+    private Map<String, AccionBusqueda> acciones = new HashMap<>();
+    
 
 
     public JfrModificarCliente(Cliente p_cliente) {
@@ -290,121 +295,18 @@ public class JfrModificarCliente extends JFrame {
         String opcionElegida = (String) ComboBoxModificar.getSelectedItem();
         String busqueda = TextFieldModificar.getText().trim();
 
-        switch (opcionElegida) {
-            case "Nombre": {
-
-                if(!busqueda.isEmpty()) {
-                    if(!nuevoCliente.verificarSiContieneNumero(busqueda)) {
-                        cliente.modificarNombreCliente(busqueda);
-                        agregarClienteSeleccionadoATabla();
-                    }
-                    else {
-                        JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this,true, "El nombre no puede tener digitos");
-                    }
-                }
-                else{
-                    JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "No ingreso ningun nombre");
-                    }
-                break;
-            }
-
-            case "Apellido": {
-                if(!busqueda.isEmpty()) {
-                    if(!nuevoCliente.verificarSiContieneNumero(busqueda)) {
-                        cliente.modificarApellidoCliente(busqueda);
-                        agregarClienteSeleccionadoATabla();
-                    }else{
-                        JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "El apellido no puede contener digitos");
-                    }
-                }else{
-                    JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "No ingreso ningun Apellido");
-                }
-                break;
-            }
-            case "DNI" : {
-                if(!busqueda.isEmpty()) {
-                    if(!GUIEnvoltorio.getGimnasio().verificarDNIExistente(busqueda) && !nuevoCliente.verificarTamDNI(busqueda)){
-
-                    cliente.modificarDNICliente(busqueda);
-                    agregarClienteSeleccionadoATabla();
-                    } else{
-                        JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "Ingrese un DNI valido");
-                    }
-                }else{
-                    JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "No ingreso ningun DNI");
-                }
-                break;
-            }
-            case "E-Mail" : {
-                if(!busqueda.isEmpty()) {
-                    if(!nuevoCliente.verificarArroba(busqueda)){
-                        cliente.modificarEMailCliente(busqueda);
-                        agregarClienteSeleccionadoATabla();
-
-                    }else {
-                        JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "Debe ingresar un mail con '@' ");
-                    }
-                }else{
-                    JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "No ingreso ningun E-Mail");
-                }
-                break;
-            }
-            case "Peso" : {
-                if(!busqueda.isEmpty()) {
-                    try {
-                        Double dato = Double.parseDouble(busqueda);
-                        if(!gimnasio.verificarPesoIngresadoCliente(dato))
-                        {
-                            cliente.modificarPesoCliente(dato);
-                            agregarClienteSeleccionadoATabla();
-                        }
-                        else
-                        {
-                            JfrErrorPopUp errorPopUp = new JfrErrorPopUp(this, true, "Ingrese un peso valido");
-                        }
-
-                    }catch (NumberFormatException e){
-                        JfrErrorPopUp errorPopUp = new JfrErrorPopUp(this, true, "Ingrese un dato valido");
-                    }
-                }else{
-                    JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "No ingreso ningun peso");
-                }
-                break;
-            }
-            case "Altura" : {
-                if(!busqueda.isEmpty()) {
-                    try {
-                        Double dato = Double.parseDouble(busqueda);
-                        if(!gimnasio.verificarAlturaIngresadoCliente(dato))
-                        {
-                            cliente.modificarAlturaCliente(dato);
-                            agregarClienteSeleccionadoATabla();
-                        }
-                        else
-                        {
-                            JfrErrorPopUp errorPopUp = new JfrErrorPopUp(this, true, "Ingrese una altura valida");
-                        }
-                    }catch (NumberFormatException e){
-                        JfrErrorPopUp errorPopUp = new JfrErrorPopUp(this, true, "Ingrese un dato valido");
-                    }
-
-                }else{
-                    JfrErrorPopUp jfrErrorPopUp = new JfrErrorPopUp(this, true, "No ingreso ninguna altura");
-                }
-                break;
-            }
-
-            default:
-                JfrAvisoPopUp aviso = new JfrAvisoPopUp(this,true,"Selecciona una opcion");
+        AccionBusqueda accion = acciones.get(opcionElegida);
+        if (accion != null){
+            accion.ejecutar(busqueda, nuevoCliente, cliente);
+        }else{
+            new JfrErrorPopUp(this, true, "Opcion no valida");
         }
 
 
         TextFieldModificar.setText("");
     }
 
-    private void TextFieldModificarActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
+
 
 
     private void BotonIrAtrasActionPerformed(ActionEvent evt) {

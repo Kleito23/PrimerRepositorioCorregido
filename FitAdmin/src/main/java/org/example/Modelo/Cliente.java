@@ -16,7 +16,7 @@ public class Cliente extends Persona implements Serializable {
     private String eMail;
     private boolean cuotaPagada;
     private boolean estado;
-    private LinkedHashMap<String, Rutina> rutinaSemanal;
+    
     private HashSet<String> actividadesInscripto;
     private boolean tieneFotoPerfil;
 
@@ -36,25 +36,14 @@ public class Cliente extends Persona implements Serializable {
         tieneFotoPerfil=false;
         fechaVencimientoCuota= LocalDate.now().plusDays(30);
 
-        setRutinaSemanal();
+        
         actividadesInscripto = new HashSet<>();
     }
 
     //Getters y Setters
 
 
-    public void setRutinaSemanal() {
-        //metodo para inicializar todos los dias con una rutina vacia, y q no haya nullpointers
-        rutinaSemanal = new LinkedHashMap<>();
-        rutinaSemanal.put(EDiasSemana.LUNES.toString(),new Rutina(EDiasSemana.LUNES));
-        rutinaSemanal.put(EDiasSemana.MARTES.toString(),new Rutina(EDiasSemana.MARTES));
-        rutinaSemanal.put(EDiasSemana.MIERCOLES.toString(),new Rutina(EDiasSemana.MIERCOLES));
-        rutinaSemanal.put(EDiasSemana.JUEVES.toString(),new Rutina(EDiasSemana.JUEVES));
-        rutinaSemanal.put(EDiasSemana.VIERNES.toString(),new Rutina(EDiasSemana.VIERNES));
-        rutinaSemanal.put(EDiasSemana.SABADO.toString(),new Rutina(EDiasSemana.SABADO));
-        rutinaSemanal.put(EDiasSemana.DOMINGO.toString(),new Rutina(EDiasSemana.DOMINGO));
 
-    }
 
     public int getIdCliente() {
         return idCliente;
@@ -91,9 +80,6 @@ public class Cliente extends Persona implements Serializable {
         return tieneFotoPerfil;
     }
 
-    public LinkedHashMap<String, Rutina> getRutinaSemanal() {
-        return rutinaSemanal;
-    }
 
     public HashSet<String> getActividadesInscripto() {
         return actividadesInscripto;
@@ -190,10 +176,7 @@ public class Cliente extends Persona implements Serializable {
         return 1;
     }
 
-    public Rutina getUnaRutinaEspecifica(Enum diaRequerido)
-    {
-        return rutinaSemanal.get(diaRequerido.toString());
-    }
+
 
     public void modificarNombreCliente(String nombre){
         if(nombre != null){
@@ -243,7 +226,6 @@ public class Cliente extends Persona implements Serializable {
                 ", eMail='" + eMail + '\'' +
                 ", cuotaPagada=" + cuotaPagada +
                 ", estado=" + estado +
-                ", rutinaSemanal=" + rutinaSemanal +
                 ", tieneFotoPerfil=" + tieneFotoPerfil +
                 '}'+super.toString();
     }
